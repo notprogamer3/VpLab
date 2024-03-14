@@ -5,7 +5,6 @@
 #ifndef C___USER_H
 #define C___USER_H
 
-#include "./user.h"
 #include <string>
 #include <iostream>
 
