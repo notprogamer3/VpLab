@@ -9,6 +9,7 @@
 #include <string>
 #include "Models/Class1/Class1.h"
 #include "Models/Class2/Class2.h"
+#include "vector"
 
 
 
@@ -20,9 +21,29 @@ private:
     int day;
     int month;
     int year;
-    Human *humansonphoto;
-    Owner owner;
+    vector<Human> humansonphoto;
+    Account *owner;
 
+
+public:
+
+        Photo(string filename, int day, int month, int year, vector<Human> humansonphoto, Account *owner);
+
+        void setFilename(string filename);
+
+        void setDate(int day, int month, int year);
+
+        void setHuman(vector<Human> humansonphoto);
+
+        string getFilename();
+
+        string getDate();
+
+        vector<Human> getHumanList();
+
+        string getOwner();
+
+        void CoutData();
 
 };
 

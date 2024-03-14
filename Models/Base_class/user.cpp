@@ -5,13 +5,13 @@
 #include "user.h"
 #include <string>
 #include <iostream>
-;
 
 
 void User::CoutData() {
-    cout<<"nickaname: "<< this->nickname;
+    cout<<"login: "<< this->login;
 }
 
-void User::setNickname(std::string nick) {
-    this->nickname=nickname;
+
+std::string User::getLogin() {
+    return this->login;
 }

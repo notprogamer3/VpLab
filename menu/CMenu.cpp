@@ -6,7 +6,7 @@
 #define PROJECTCPP_CMENU_CPP
 
 
-#include "CMenu.h"
+#include "./CMenu.h"
 
 
 CMenu::CMenu(string title, CMenuItem *items, size_t count) : title(title), items(items), count(count) {}
@@ -36,7 +36,7 @@ void CMenu::print() {
 }
 int CMenu::runCommand() {
     print();
-    std::cout << "\n Select >> ";
+    std::cout << "\nSelect >> ";
     std::cin >> select;
     if (select == 0) {
         return 0;
