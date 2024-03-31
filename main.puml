@@ -77,9 +77,9 @@ abstract class User {
     {abstract} void CoutData()
 }
 
-CMenu "1" -- "many" CMenuItem : contains
-Photo "1" -- "many" Human : has
-Photo "0..1" -- "1" Account : owned by
+CMenu "1" o-- "many" CMenuItem : contains
+Photo "1" *-- "many" Human : has
+Photo "0..1" o-- "1" Account : owned by
 Account --|> User : extends
 Human --|> User : extends
 
