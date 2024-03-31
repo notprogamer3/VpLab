@@ -1,0 +1,86 @@
+@startuml
+
+class CMenuItem {
+    typedef int(*Func)();
+        CMenuItem(string, Func);
+        Func func{};
+        string item_name{};
+        string getName();
+        void print();
+        int run();
+}
+
+class CMenu {
+    CMenu(string, CMenuItem *, size_t);
+        int getSelect() const;
+        bool isRun() const;
+        string getTitle();
+        size_t getCount() const;
+        CMenuItem *getItems();
+        void print();
+        int runCommand();
+        int select{-1};
+        size_t count{};
+        bool running{};
+        string title{};
+        CMenuItem *items{};
+}
+
+class Photo {
+    string filename
+    int day
+    int month
+    int year
+    vector<Human> humansonphoto
+    Account *owner
+    void setFilename(string filename)
+    void setDate(int day, int month, int year)
+    void setHuman(vector<Human> humansonphoto)
+    string getFilename()
+    string getDate()
+    vector<Human> getHumanList()
+    string getOwner()
+    void CoutData()
+    bool operator==(const Photo& other)
+    bool operator!=(const Photo& other)
+    bool operator<(const Photo& other)
+    bool operator>(const Photo& other)
+}
+
+class Human {
+    string name
+        string surname
+        int age
+        void setName(string name)
+        void setSurname(string surname)
+        void setAge(int age)
+        string getName()
+        string getSurname()
+        int getAge()
+}
+
+class Account {
+    string nickname
+         string password
+         bool admin
+         void setNickname(string nickname)
+         void setPassword(string password)
+         void setAdmin(bool admin)
+         string getNickname()
+         string getPassword()
+         bool getAdmin()
+}
+
+abstract class User {
+    string login
+    string getLogin()
+    {abstract} void CoutData()
+}
+
+CMenu "1" -- "many" CMenuItem : contains
+Photo "1" -- "many" Human : has
+Photo "0..1" -- "1" Account : owned by
+Account --|> User : extends
+Human --|> User : extends
+
+@enduml

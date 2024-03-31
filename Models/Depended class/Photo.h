@@ -12,7 +12,6 @@
 #include "vector"
 
 
-
 using namespace std;
 
 class Photo {
@@ -27,23 +26,35 @@ private:
 
 public:
 
-        Photo(string filename, int day, int month, int year, vector<Human> humansonphoto, Account *owner);
+    Photo(string filename, int day, int month, int year, vector<Human> humansonphoto, Account *owner);
 
-        void setFilename(string filename);
+    void setFilename(string filename);
 
-        void setDate(int day, int month, int year);
+    void setDate(int day, int month, int year);
 
-        void setHuman(vector<Human> humansonphoto);
+    void setHuman(vector<Human> humansonphoto);
 
-        string getFilename();
+    string getFilename();
 
-        string getDate();
+    string getDate();
 
-        vector<Human> getHumanList();
+    vector<Human> getHumanList();
 
-        string getOwner();
+    string getOwner();
 
-        void CoutData();
+    friend std::ostream &operator<<(std::ostream &os, const Photo &photo);
+
+    friend std::istream &operator>>(std::istream &is, Photo &photo);
+
+    bool operator==(const Photo &other) const;
+
+    bool operator!=(const Photo &other) const;
+
+    bool operator<(const Photo& other) const;
+
+    bool operator>(const Photo& other) const;
+
+    void CoutData();
 
 };
 

@@ -56,3 +56,50 @@ void Photo::CoutData(){
     }
     cout<<endl;
 };
+
+std::ostream& operator<<(std::ostream& os, const Photo& photo) {
+    os << "filename: " << photo.filename
+       << " date: " << photo.day << "." << photo.month << "." << photo.year
+       << " owner: " << (photo.owner ? photo.owner->getNickname() : "Нет владельца")
+       << " Humans on photo: ";
+
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Photo& photo) {
+    std::string ownerNickname;
+    cout << "Filename: ";
+    is >> photo.filename;
+    cout << "Day: ";
+    is >> photo.day;
+    cout << "Month: ";
+    is >> photo.month;
+    cout << "Year: ";
+    is >> photo.year;
+
+    return is;
+}
+
+bool Photo::operator==(const Photo& other) const {
+    return filename == other.filename && day == other.day && month == other.month && year == other.year;
+}
+
+bool Photo::operator!=(const Photo& other) const {
+    return !(*this == other);
+}
+
+bool Photo::operator<(const Photo& other) const {
+    if (year != other.year)
+        return year < other.year;
+    if (month != other.month)
+        return month < other.month;
+    return day < other.day;
+}
+
+bool Photo::operator>(const Photo& other) const {
+    if (year != other.year)
+        return year > other.year;
+    if (month != other.month)
+        return month > other.month;
+    return day > other.day;
+}
