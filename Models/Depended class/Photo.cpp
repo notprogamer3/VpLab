@@ -5,14 +5,6 @@
 
 #include "Photo.h"
 
-Photo::Photo(string filename, int day, int month, int year, vector<Human> humansonphoto, Account *owner) {
-    this->filename=filename;
-    this->day=day;
-    this->month=month;
-    this->year=year;
-    this->humansonphoto=humansonphoto;
-    this->owner=owner;
-}
 
 void Photo::setFilename(string filename) {
     this->filename=filename;

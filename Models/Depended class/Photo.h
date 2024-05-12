@@ -26,7 +26,7 @@ private:
 
 public:
 
-    Photo(string filename, int day, int month, int year, vector<Human> humansonphoto, Account *owner);
+    Photo(string filename="", int day=0, int month=0, int year=0, vector<Human> humansonphoto = {}, Account *owner = nullptr) : filename(filename), day(day), month(month), year(year), humansonphoto(std::move(humansonphoto)), owner(owner) {};
 
     void setFilename(string filename);
 

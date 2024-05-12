@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include "Models/Depended class/Photo.h"
+#include <Models/MyVector/MyContainer.h>
 
 
 using namespace std;
@@ -56,6 +57,7 @@ int f6() {
 const int ITEMS_NUMBER = 6;
 
 int main() {
+
     CMenuItem items[ITEMS_NUMBER] {CMenuItem{"Вывести смайлик", f1},
                                    CMenuItem{"Квадратный корень из 100", f2},
                                    CMenuItem{"Добавить фото", f3},
