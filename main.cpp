@@ -54,9 +54,12 @@ int f6() {
 #pragma endregion
 
 
-const int ITEMS_NUMBER = 6;
+const int ITEMS_USER_NUMBER = 5;
+const int ITEMS_ADMIN_NUMBER = 6;
+
 
 int main() {
+
 
     CMenuItem items[ITEMS_NUMBER] {CMenuItem{"Вывести смайлик", f1},
                                    CMenuItem{"Квадратный корень из 100", f2},

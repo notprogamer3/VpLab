@@ -5,6 +5,8 @@
 
 #include "Photo.h"
 
+#include <assert.h>
+
 
 void Photo::setFilename(string filename) {
     this->filename=filename;
@@ -64,10 +66,13 @@ std::istream& operator>>(std::istream& is, Photo& photo) {
     is >> photo.filename;
     cout << "Day: ";
     is >> photo.day;
+    assert(photo.day > 0 and photo.day <= 31);
     cout << "Month: ";
     is >> photo.month;
+    assert(photo.month > 0 and photo.month <= 31);
     cout << "Year: ";
     is >> photo.year;
+    assert(photo.month > 0 and photo.month <= 31);
 
     return is;
 }

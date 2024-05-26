@@ -13,6 +13,7 @@ Account::Account(string login, string password) {
 
 void Account::setPassword(string password) {
     this->password = password;
+
 }
 
 string Account::getPassword() {

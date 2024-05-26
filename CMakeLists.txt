@@ -20,4 +20,5 @@ add_executable(projectcpp
         menu/CMenu.cpp
         menu/CMenuItem.cpp
         menu/CMenuItem.h
-        Models/MyVector/MyContainer.h)
+        Models/MyVector/MyContainer.h
+        Models/MyVector/MyContainer2.h)
