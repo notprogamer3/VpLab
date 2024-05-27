@@ -59,15 +59,29 @@ const int ITEMS_ADMIN_NUMBER = 6;
 
 
 int main() {
+    //test MyContainer
+    MyContainer container = MyContainer();
+    Account admin("sd", "123");
+    container.push_back(Photo("photo1.jpg", 1, 1, 2021, vector<Human>(), &admin));
+    container.push_back(Photo("photo2.jpg", 2, 2, 2021, vector<Human>(), nullptr));
+    container.push_back(Photo("photo3.jpg", 3, 3, 2021, vector<Human>(), nullptr));
+    cout<<"Данные"<<endl;
+    container.coutData();
+    cout << endl;
+    cout<<"Данные после сортировки"<<endl;
+    container.sort();
+    container.coutData();
+    cout << endl;
+    cout<<"Данные после фильтрации"<<endl;
+    container.filter("sd");
 
-
-    CMenuItem items[ITEMS_NUMBER] {CMenuItem{"Вывести смайлик", f1},
-                                   CMenuItem{"Квадратный корень из 100", f2},
-                                   CMenuItem{"Добавить фото", f3},
-                                   CMenuItem{"Вывести список фото", f4},
-                                   CMenuItem{"Сортировка списка фото по дате", f5},
-                                   CMenuItem{"Удаление фото", f6}};
-    CMenu menu("My console menu", items, ITEMS_NUMBER);
-    while (menu.runCommand()) {};
+    // CMenuItem items[ITEMS_ADMIN_NUMBER] {CMenuItem{"Вывести смайлик", f1},
+    //                                CMenuItem{"Квадратный корень из 100", f2},
+    //                                CMenuItem{"Добавить фото", f3},
+    //                                CMenuItem{"Вывести список фото", f4},
+    //                                CMenuItem{"Сортировка списка фото по дате", f5},
+    //                                CMenuItem{"Удаление фото", f6}};
+    // CMenu menu("My console menu", items, ITEMS_ADMIN_NUMBER);
+    // while (menu.runCommand()) {};
     return 0;
 }
