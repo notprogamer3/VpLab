@@ -1,233 +1,267 @@
-//
-// Created by rdast on 26.05.2024.
-//
-
-#ifndef MYCONTAINER2_H
-#define MYCONTAINER2_H
-#include <iostream>
-#include <string>
-#include "Models/Depended class/Photo.h"
 using namespace std;
 
-
 template<class T>
-class ItemContainer {
-private:
-    T cur_value{};
-    ItemContainer *next;
-    ItemContainer *prev;
-
+class ItemList {
 public:
-    typedef T obj_type;
+	// сохраним имеющийся тип рабочего объекта
+	typedef T objType;
 
-    ItemContainer();
+	// конструктор по умолчанию
+	ItemList() = default;
 
-    explicit ItemContainer(T val) : cur_value(val) {
-    };
+	// явный конструктор принимающий значение
+	explicit ItemList(T v) : m_value(v) {
+	}
 
-    ItemContainer(T val, ItemContainer *next, ItemContainer *prev) : cur_value(val), next(next), prev(prev) {
-    };
+	// перегруженный конструктор принимающий
+	// значение и указатель на предидущий элемент
+	ItemList(T v, ItemList<T> *p_b) : m_value(v), m_back(p_b) {
+	}
 
-    ItemContainer(const ItemContainer &it) : ItemContainer<T>(it.cur_value, it.next, it.prev) {
-    };
+	// перегруженный конструктор принимающий
+	// значение и указатели на предидущий и следующий элементы
+	ItemList(T v, ItemList<T> *p_b, ItemList<T> *p_n) : m_value(v), m_back(p_b),
+	                                                    m_next(p_n) {
+	}
 
-    void set(T v) {
-        cur_value = v;
-    }
+	// делегирующий конструктор копий
+	// принимающий ссылку на константный объект
+	ItemList(const ItemList<T> &it) : ItemList<T>(it.m_value, it.m_back,
+	                                              it.m_next) {
+	}
 
-    T get() {
-        return cur_value;
-    }
+	// метод установки значения
+	void set(T v) {
+		m_value = v;
+	}
 
-    void setNext(ItemContainer *n) {
-        next = n;
-    }
-
-    T getNext() {
-        return next;
-    }
-
-    void setBack(ItemContainer *b) {
-        prev = b;
-    }
-
-    T getBack() {
-        return prev;
-    }
-
-    friend ostream &operator<<(ostream &os, const ItemContainer &item) {
-        os << item.cur_value;
-        return os;
-    }
-};
+	// метод получения значения
+	T get() {
+		return m_value;
+	}
 
 
-template<class T>
-class MyContainer {
-public:
-    template<class V>
-    class IteratorCont {
-        friend class MyContainer<V>;
+	// метод установки указателя на след. эл.
+	void setNext(ItemList<T> *p_n) {
+		m_next = p_n;
+	}
 
-    public:
-        IteratorCont<V>(const IteratorCont<V> &it) : m_item(it.m_item) {
-        }
+	// метод получения указателя на след. эл.
+	ItemList<T> *getNext() {
+		return m_next;
+	}
 
-        bool operator==(const IteratorCont<V> &it) const {
-            return m_item == it.m_item;
-        }
+	// метод установки указателя на пред. эл.
+	void setBack(ItemList<T> *p_b) {
+		m_back = p_b;
+	}
 
-        bool operator!=(const IteratorCont<V> &it) const {
-            return m_item != it.m_item;
-        }
+	// метод получения указателя на пред. эл.
+	ItemList<T> *getBack() {
+		return m_back;
+	}
 
-        IteratorCont<V> &operator++() {
-            m_item = m_item->getNext();
-            return *this;
-        }
-
-        V &operator*() const {
-            return *m_item;
-        }
-
-    private:
-        V *m_item{};
-
-        explicit IteratorCont(V *p) : m_item(p) {
-        }
-    };
-
-    typedef IteratorList<T> iterator;
-    typedef IteratorList<T> const_iterator;
-
-    MyContainer() = default;
-
-    explicit MyContainer(T *it) {
-        initList(*it);
-    }
-
-    iterator begin() {
-        return iterator(m_start);
-    }
-
-    iterator end() {
-        return iterator(m_end);
-    }
-
-    const_iterator begin() const {
-        return const_iterator(m_start);
-    }
-
-    const_iterator end() const {
-        return const_iterator(m_end);
-    }
-
-    void erase() {
-        for (int i{}; i < m_len; ++i) {
-            m_start = m_start->getNext();
-            delete m_start->getBack();
-        }
-        delete m_end;
-        m_start = m_end = nullptr;
-        m_len = 0;
-    }
-
-    ~MyContainer() {
-        erase();
-    }
-
-    friend ostream &operator<<(ostream &out, const MyContainer<T> &lst) {
-        if (lst.isEmpty()) {
-            out << "List is empty" << endl;
-            return out;
-        }
-        for (const ItemList<typename T::objType> &it: lst) {
-            out << it << endl;
-        }
-        return out;
-    }
-
-    MyContainer(const MyContainer<T> &lst) = delete;
-
-    // метод проверки на пустоту
-    bool isEmpty() const {
-        return !m_start;
-    }
-
-    size_t len() {
-        return m_len;
-    }
-
-    void add(T *it) {
-        if (isEmpty()) {
-            initList(*it);
-        } else {
-            m_end->getBack()->setNext(it);
-            it->setNext(m_end);
-            m_end->setBack(it);
-            ++m_len;
-        }
-    }
-
-    void pushStart(T *it) {
-        if (isEmpty()) {
-            initList(*it);
-        } else {
-            it->setNext(m_start);
-            m_start = it;
-            ++m_len;
-        }
-    }
-
-    // метод удаления эл. с конца
-    void delEnd() {
-        if (isEmpty()) {
-            return;
-        } else if (len() == 1) {
-            delete m_start;
-            m_start = nullptr;
-            delete m_end;
-            m_end = nullptr;
-            m_len = 0;
-        } else {
-            m_end->setBack(m_end->getBack()->getBack());
-            delete m_end->getBack()->getNext();
-            m_end->getBack()->setNext(m_end);
-
-            --m_len;
-        }
-    }
-
-    void delStart() {
-        if (isEmpty()) {
-            return;
-        } else if (len() == 1) {
-            delete m_start;
-            m_start = nullptr;
-            delete m_end;
-            m_end = nullptr;
-            m_len = 0;
-        } else {
-            m_start = m_start->getNext();
-            delete m_start->getBack();
-            m_start->setBack(nullptr);
-            --m_len;
-        }
-    }
+	// добавим дружественную функцию перегрузки
+	// оператора вывода элемента на консоль
+	friend ostream &operator<<(ostream &out, const ItemList<T> &it) {
+		cout << it.m_value << endl;
+		return out;
+	}
 
 private:
-    T *m_start{};
-    T *m_end{};
-    size_t m_len{};
-    void initList(T &it) {
-        m_start = &it;
-        m_end = new T(0, m_start);
-        it.setNext(m_end);
-
-        m_len = 1;
-    }
+	T m_value{};
+	ItemList<T> *m_next{};
+	ItemList<T> *m_back{};
 };
 
+template<class T>
+class MyList {
+public:
+	template<class V>
+	class IteratorList {
+
+		// делаем внешний класс дружественным к подклассу
+		// чтобы он имел доступ к нашим закрытым свойствам
+		friend class MyList<V>;
+
+	public:
+		// пишем конструктор копирования
+		// который будет производить инициализацию членов класса
+		// тело конструктора будет пустым
+		IteratorList<V>(const IteratorList<V> &it) : m_item(it.m_item) {
+		}
+
+		// перегружаем оператор сравнения
+		bool operator==(const IteratorList<V> &it) const {
+			return m_item == it.m_item;
+		}
+
+		// перегружаем оператор сравнения на не
+		bool operator!=(const IteratorList<V> &it) const {
+			return m_item != it.m_item;
+		}
+
+		// перегружаем оператор икремента
+		IteratorList<V> &operator++() {
+			m_item = m_item->getNext();
+			return *this;
+		}
+
+		// перегружаем оператор разыменования указателя
+		V &operator*() const {
+			return *m_item;
+		}
+
+	private:
+		V *m_item{};
+		// создаём закрытый конструктор инициализации членов класса
+		explicit IteratorList(V *p) : m_item(p) {
+		}
+	};
+
+	typedef IteratorList<T> iterator;
+	typedef IteratorList<T> const_iterator;
+
+	// конструктор по умолчанию
+	MyList() = default;
+
+	// явный конструктор
+	explicit MyList(T *it) {
+		initList(*it);
+	}
+
+	// возврат итератора на первый элемент
+	iterator begin() {
+		return iterator(m_start);
+	}
+
+	// возврат итератора на за-последний элемент
+	iterator end() {
+		return iterator(m_end);
+	}
+
+	// возврат константного итератора на первый элемент
+	const_iterator begin() const {
+		return const_iterator(m_start);
+	}
+
+	// возврат константного итератора на за-последний элемент
+	const_iterator end() const {
+		return const_iterator(m_end);
+	}
+
+	// метод очистки списка
+	void erase() {
+		for (int i{}; i < m_len; ++i) {
+			m_start = m_start->getNext();
+			delete m_start->getBack();
+		}
+		delete m_end;
+		m_start = m_end = nullptr;
+		m_len = 0;
+
+	}
+
+	~MyList() {
+		erase();
+	}
+
+	// добавим дружественную функцию перегрузки оператора вывода списка на консоль
+	friend ostream &operator<<(ostream &out, const MyList<T> &lst) {
+		if (lst.isEmpty()) {
+			out << "List is empty" << endl;
+			return out;
+		}
+		for (const ItemList<typename T::objType> &it: lst) {
+			out << it << endl;
+		}
+		return out;
+	}
+
+	// не будем реализовывать конструктор копий
+	MyList(const MyList<T> &lst) = delete;
+
+	// метод проверки на пустоту
+	bool isEmpty() const {
+		return !m_start;
+	}
+
+	// метод получения размера списка
+	size_t len() {
+		return m_len;
+	}
+
+	// метод добавления элемента в конец списка
+	void add(T *it) {
+		if (isEmpty()) {
+			initList(*it);
+		} else {
+
+			m_end->getBack()->setNext(it);
+			it->setNext(m_end);
+			m_end->setBack(it);
+			++m_len;
+		}
+	}
+
+	// метод добавления элемента в начало списка
+	void pushStart(T *it) {
+		if (isEmpty()) {
+			initList(*it);
+		} else {
+			it->setNext(m_start);
+			m_start = it;
+			++m_len;
+		}
+	}
+
+	// метод удаления эл. с конца
+	void delEnd() {
+		if (isEmpty()) {
+			return;
+		} else if (len() == 1) {
+			delete m_start;
+			m_start = nullptr;
+			delete m_end;
+			m_end = nullptr;
+			m_len = 0;
+		} else {
+			m_end->setBack(m_end->getBack()->getBack());
+			delete m_end->getBack()->getNext();
+			m_end->getBack()->setNext(m_end);
 
 
-#endif //MYCONTAINER2_H
+			--m_len;
+		}
+	}
+
+	// метод удаления эл. с начала
+	void delStart() {
+		if (isEmpty()) {
+			return;
+		} else if (len() == 1) {
+			delete m_start;
+			m_start = nullptr;
+			delete m_end;
+			m_end = nullptr;
+			m_len = 0;
+		} else {
+			m_start = m_start->getNext();
+			delete m_start->getBack();
+			m_start->setBack(nullptr);
+			--m_len;
+		}
+	}
+
+private:
+	T *m_start{};
+	T *m_end{};
+	size_t m_len{};
+	// приватный метод инициализации списка
+	void initList(T &it) {
+		m_start = &it;
+		m_end = new T(0, m_start);
+		it.setNext(m_end);
+		m_len = 1;
+	}
+};

@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include "Models/Depended class/Photo.h"
-#include <Models/MyVector/MyContainer.h>
+#include <Models/MyVector/MyContainer2.h>
 
 
 using namespace std;
@@ -59,21 +59,22 @@ const int ITEMS_ADMIN_NUMBER = 6;
 
 
 int main() {
-    //test MyContainer
-    MyContainer container = MyContainer();
-    Account admin("sd", "123");
-    container.push_back(Photo("photo1.jpg", 1, 1, 2021, vector<Human>(), &admin));
-    container.push_back(Photo("photo2.jpg", 2, 2, 2021, vector<Human>(), nullptr));
-    container.push_back(Photo("photo3.jpg", 3, 3, 2021, vector<Human>(), nullptr));
-    cout<<"Данные"<<endl;
-    container.coutData();
-    cout << endl;
-    cout<<"Данные после сортировки"<<endl;
-    container.sort();
-    container.coutData();
-    cout << endl;
-    cout<<"Данные после фильтрации"<<endl;
-    container.filter("sd");
+    MyList<ItemList<int>> lst;
+
+    lst.add(new ItemList<int>(25));
+    lst.add(new ItemList<int>(26));
+    lst.add(new ItemList<int>(27));
+    lst.add(new ItemList<int>(28));
+    cout << lst << endl;
+    for (const auto& it : lst) {
+        cout << it << endl;
+    }
+
+    //lst.add(new ItemList<Photo>( Photo("photo.jpg", 1, 1, 2021, vector<Human>(), nullptr)));
+    //lst.add(new ItemList<Photo>( Photo("photo2.jpg", 1, 1, 2021, vector<Human>(), nullptr)));
+    //lst.add(new ItemList<Photo>( Photo("photo3.jpg", 1, 1, 2021, vector<Human>(), nullptr)));
+    //lst.add(new ItemList<Photo>( Photo("photo4.jpg", 1, 1, 2021, vector<Human>(), nullptr)));
+
 
     // CMenuItem items[ITEMS_ADMIN_NUMBER] {CMenuItem{"Вывести смайлик", f1},
     //                                CMenuItem{"Квадратный корень из 100", f2},
